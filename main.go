@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -17,9 +16,11 @@ var (
 	vue              bool
 	userConfirmation string
 	confirmed        bool
+	filename         string
 )
 
 func main() {
+	loadConfig()
 	flag.Parse()
 
 	// if user does not supply flags, print help
@@ -34,24 +35,21 @@ func main() {
 
 	// Ask to continue
 	// fmt.Printf("Continue?\n")
-	confirmUserActions("Continue?\n", 10)
+	confirmUserActions("Continue?\n", 3)
 
 	if confirmed == true {
 		// If --rails is true then run Rails command too
-		fmt.Printf("Running Rails commands..\n")
+		if rails == true {
+			fmt.Printf("Running Rails commands..\n")
+		}
 
 		// If --vue is true then create Vue files
 		if vue == true {
-			fmt.Printf("Creating Vue Files..\n")
 			createVueFiles()
 		}
-
-		// If --admin is true then create Admin files
-
 	} else {
 		fmt.Printf("Cancelled by user\n")
 	}
-
 }
 
 func init() {
@@ -62,20 +60,18 @@ func init() {
 }
 
 func confirmUserActions(s string, tries int) bool {
-
 	reader := bufio.NewReader(os.Stdin)
 
 	for ; tries > 0; tries-- {
 		fmt.Printf("%s [y/n]: ", s)
 
 		res, err := reader.ReadString('\n')
-		if err != nil {
-			log.Fatal(err)
-		}
+		check(err)
 
 		if len(res) < 2 {
 			continue
 		}
+
 		if strings.ToLower(strings.TrimSpace(res))[0] == 'y' {
 			confirmed = true
 			return confirmed
@@ -86,13 +82,16 @@ func confirmUserActions(s string, tries int) bool {
 	return confirmed
 }
 
-func createVueFiles() {
-	fmt.Printf(vueTemplate)
-}
+// func colorizeBool(arg bool) {
+// 	if arg == true {
+// 		color.Blue(arg)
+// 	} else {
+// 		color.Red(arg)
+// 	}
+// }
 
-func printHelp() {
-	fmt.Printf("Usage: %s [options]\n", os.Args[0])
-	fmt.Println("Options:")
-	flag.PrintDefaults()
-	os.Exit(1)
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }

@@ -1,28 +1,40 @@
 package main
 
-const (
-	vueTemplate = `
-	<template>
-	</template>
-	
-	<script>
-	export default {
-		name: '',
-	
-		data () {
-			return {
-	
-			}
-		}
-	}
-	</script>
-	
-	<style lang="css" scoped>
-	</style>`
+import (
+	"bytes"
+	"html/template"
 )
 
-const (
-	vueAdminTemplate = `
-	
-	`
-)
+const tpl = `<template>
+	<div class="content">
+	</div>
+</template>
+
+<script>
+export default {
+	name: '{{.Name}}',
+	data () {
+		return {
+
+		}
+	}
+}
+</script>
+
+<style lang="css" scoped>
+</style>`
+
+func writeTemplate(name string) string {
+	t, err := template.New("webpage").Parse(tpl)
+	check(err)
+	data := struct {
+		Name string
+	}{
+		Name: name}
+
+	buf := new(bytes.Buffer)
+	err = t.Execute(buf, data)
+	check(err)
+
+	return buf.String()
+}
