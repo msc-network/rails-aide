@@ -1,5 +1,0 @@
-language: go
-go:
-  - "1.10.x"
-go_import_path: github.com/spf13/pflag
-go_import_path: github.com/jinzhu/inflection

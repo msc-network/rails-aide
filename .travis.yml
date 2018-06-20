@@ -1,0 +1,25 @@
+go_import_path: github.com/spf13/pflag
+go_import_path: github.com/jinzhu/inflection
+
+language: go
+go:
+  - "1.10.x"
+
+os:
+  - linux
+
+matrix:
+  allow_failures:
+    - go: tip
+  fast_finish: true
+
+script:
+  - go install ./...
+  - diff -u <(echo -n) <(gofmt -d .)
+  # - go test -v ./...
+
+after_success:
+  - go get -u -d github.com/msc-network/mscmgmt-builder
+  - cd $GOPATH/src/github.com/msc-network/mscmgmt-builder && make && ./hugo -s docs && cd -
+
+sudo: false
