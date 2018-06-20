@@ -4,6 +4,14 @@ A small command line utility for automating file creation and other helpers in a
 
 Currently specific to the mscmgmt webapp.
 
+## Usage
+
+For information about flags and what they do see the [docs](docs/index.md)
+
+### Quick Start
+
+Run: ```./mscmgmt-builder -help```
+
 ## Development
 
 The latest binary for Linux is included in the repo, to make your own:
@@ -20,7 +28,7 @@ Run tool: ```./mscmgmt-builder -help```
 * Piggy back running rails commands - involves storing model attributes and generate the rails command
 * Better config using a local file to overwrite the default if present (Viper)
 * More involved templates including imports, mixins etc.
-* Make it more generic for other Rails apps. Possible rename to 'railsgo'
+* Make it more generic for other Rails apps. Possibly rename to 'railsgo'
 
 ## Credits
 

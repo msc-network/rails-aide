@@ -16,16 +16,23 @@ var (
 	vue              bool
 	userConfirmation string
 	confirmed        bool
-	filename         string
+	installConfig    bool
+	configValues     []byte
 )
 
 func main() {
-	loadConfig()
 	flag.Parse()
 
 	// if user does not supply flags, print help
 	if flag.NFlag() == 0 {
 		printHelp()
+	}
+
+	loadConfig()
+
+	if installConfig == true {
+		installConfigFile()
+		os.Exit(0)
 	}
 
 	fmt.Printf("Creating model scaffold for: %s\n", model)
@@ -54,6 +61,7 @@ func main() {
 
 func init() {
 	flag.BoolVarP(&admin, "admin", "a", true, "Set whether Admin files are created")
+	flag.BoolVarP(&installConfig, "config", "c", false, "Install local config file")
 	flag.StringVarP(&model, "model", "m", "", "Specify the name of the Model you'd like to create")
 	flag.BoolVarP(&rails, "rails", "r", false, "Run rails generators")
 	flag.BoolVarP(&vue, "vue", "v", true, "Set whether Vue files are created")

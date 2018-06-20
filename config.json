@@ -1,4 +1,7 @@
 {
      "BaseDir": "/app",
-     "FrontendDir": "/javascript"
+     "FrontendDir": "/javascript/frontend",
+     "Admin": true,
+     "Vue": true,
+     "Rails": false
 }
