@@ -1,8 +1,18 @@
-# mscmgmt-builder
+# mscmgmt-builder [![Build Status](https://travis-ci.org/msc-network/mscmgmt-builder.svg?branch=master)](https://travis-ci.org/msc-network/mscmgmt-builder)
 
 A small command line utility for automating file creation and other helpers in a Rails app with Vue on the front end.
 
 Currently specific to the mscmgmt webapp.
+
+## Development
+
+The latest binary for Linux is included in the repo, to make your own:
+
+Clone repo: ```git clone github.com/msc-network/mscmgmt-builder.git```
+
+Build binary: ```go build```
+
+Run tool: ```./mscmgmt-builder -help```
 
 ## TODO
 
