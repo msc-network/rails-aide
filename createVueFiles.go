@@ -7,8 +7,12 @@ import (
 	inflection "github.com/jinzhu/inflection"
 )
 
-var configuration = Configuration{}
-var path = configuration.BaseDir
+func init() {
+	// loads config for VueFiles. Now we can use config values e.g. config.BaseDir => /app
+	config := loadConfig()
+	var path = config
+	fmt.Println(path)
+}
 
 // Create AdminRecordFile - LabelAdmin (admin)
 // Create AdminListFile - LabelsAdmin (admin)
@@ -36,42 +40,42 @@ func createVueFiles() {
 
 func createAdminRecordFile() {
 	writable := []byte(writeTemplate(model + "Admin.vue"))
-	err := ioutil.WriteFile(path+model+"Admin.vue", writable, 0644)
+	err := ioutil.WriteFile(model+"Admin.vue", writable, 0644)
 	check(err)
 }
 
 func createAdminListFile() {
 	writable := []byte(writeTemplate(inflection.Plural(model) + "Admin"))
-	err := ioutil.WriteFile(path+inflection.Plural(model)+"Admin.vue", writable, 0644)
+	err := ioutil.WriteFile(inflection.Plural(model)+"Admin.vue", writable, 0644)
 	check(err)
 }
 
 func createAdminNewRecordFile() {
 	writable := []byte(writeTemplate("New" + model))
-	err := ioutil.WriteFile(path+"New"+model+".vue", writable, 0644)
+	err := ioutil.WriteFile("New"+model+".vue", writable, 0644)
 	check(err)
 }
 
 func createAdminEditFile() {
 	writable := []byte(writeTemplate("Edit" + model + "Admin"))
-	err := ioutil.WriteFile(path+"Edit"+model+"Admin.vue", writable, 0644)
+	err := ioutil.WriteFile("Edit"+model+"Admin.vue", writable, 0644)
 	check(err)
 }
 
 func createComponentFormFile() {
 	writable := []byte(writeTemplate(model + "Form"))
-	err := ioutil.WriteFile(path+model+"Form.vue", writable, 0644)
+	err := ioutil.WriteFile(model+"Form.vue", writable, 0644)
 	check(err)
 }
 
 func createComponentRecordDetailFile() {
 	writable := []byte(writeTemplate(model + "Detail"))
-	err := ioutil.WriteFile(path+model+"Detail.vue", writable, 0644)
+	err := ioutil.WriteFile(model+"Detail.vue", writable, 0644)
 	check(err)
 }
 
 func createComponentListFile() {
 	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
-	err := ioutil.WriteFile(path+inflection.Plural(model)+"List.vue", writable, 0644)
+	err := ioutil.WriteFile(inflection.Plural(model)+"List.vue", writable, 0644)
 	check(err)
 }

@@ -26,7 +26,7 @@ Run tool: ```./mscmgmt-builder -help```
 
 * Write generated files to directory rather than where the binary is run.
 * Piggy back running rails commands - involves storing model attributes and generate the rails command
-* Better config using a local file to overwrite the default if present (Viper)
+* ~~Better config using a local file to overwrite the default if present~~
 * More involved templates including imports, mixins etc.
 * Make it more generic for other Rails apps. Possibly rename to 'railsgo'
 

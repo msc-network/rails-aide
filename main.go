@@ -17,7 +17,7 @@ var (
 	userConfirmation string
 	confirmed        bool
 	installConfig    bool
-	configValues     []byte
+	config           Config
 )
 
 func main() {
@@ -32,7 +32,7 @@ func main() {
 
 	if installConfig == true {
 		installConfigFile()
-		os.Exit(0)
+		os.Exit(1)
 	}
 
 	fmt.Printf("Creating model scaffold for: %s\n", model)
