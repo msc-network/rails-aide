@@ -4,9 +4,11 @@ A small command line utility for automating file creation and other helpers in a
 
 Currently specific to the mscmgmt webapp.
 
+For a mroe detailed look go read the [docs](docs/index.md)
+
 ## Usage
 
-For information about flags and what they do see the [docs](docs/index.md)
+For information about flags and what they do see [usage.md](docs/usage.md)
 
 ### Quick Start
 
