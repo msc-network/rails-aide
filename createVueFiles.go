@@ -69,6 +69,13 @@ func createVueFiles() {
 	createUserEditFile()
 }
 
+// TODO: [unused] Test generic createFile and make it handle arrays
+func createFile(templateName string, fileFullPath string) {
+	writable := []byte(writeTemplate(templateName))
+	err := ioutil.WriteFile(fileFullPath, writable, 0754)
+	check(err)
+}
+
 // Admin
 func createAdminRecordFile() {
 	writable := []byte(writeTemplate(model + "Admin.vue"))

@@ -19,7 +19,7 @@ const jsonConfig = `
     "version": "0.0.1",
     "author": "CromonMS <http://github.com/CromonMS>",
     "description": "A companion for building Rails assets",
-    "url": "https://github.com/msc-network/rails-aide - TODO"
+    "url": "https://github.com/msc-network/rails-aide - TODO: change name"
   },
   "BaseDir": "/app",
   "FrontendPath": "/javascript/frontend",
