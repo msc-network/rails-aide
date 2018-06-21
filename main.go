@@ -10,14 +10,15 @@ import (
 )
 
 var (
-	admin            bool
-	model            string
-	rails            bool
-	vue              bool
-	userConfirmation string
-	confirmed        bool
-	installConfig    bool
-	config           Config
+	admin               bool
+	model               string
+	rails               bool
+	vue                 bool
+	userConfirmation    string
+	confirmed           bool
+	installLocalConfig  bool
+	installGlobalConfig bool
+	config              Config
 )
 
 func main() {
@@ -28,10 +29,18 @@ func main() {
 		printHelp()
 	}
 
-	loadConfig()
+	if installGlobalConfig == true {
+		installGlobalConfigFile()
+		os.Exit(1)
+	}
 
-	if installConfig == true {
-		installConfigFile()
+	if installLocalConfig == true {
+		installLocalConfigFile()
+		os.Exit(1)
+	}
+
+	if model == "" {
+		fmt.Printf("Model is missing, please re-run\n")
 		os.Exit(1)
 	}
 
@@ -41,7 +50,6 @@ func main() {
 	fmt.Printf("Run rails commands?: %t\n", rails)
 
 	// Ask to continue
-	// fmt.Printf("Continue?\n")
 	confirmUserActions("Continue?\n", 3)
 
 	if confirmed == true {
@@ -60,11 +68,15 @@ func main() {
 }
 
 func init() {
-	flag.BoolVarP(&admin, "admin", "a", true, "Set whether Admin files are created")
-	flag.BoolVarP(&installConfig, "config", "c", false, "Install local config file")
+	checkOrCreateGlobalAppFolder()
+	config := loadConfig()
+
+	flag.BoolVarP(&admin, "admin", "a", config.Admin, "Set whether Admin files are created")
+	flag.BoolVarP(&installLocalConfig, "config", "c", false, "Install local config file")
+	flag.BoolVarP(&installGlobalConfig, "gconfig", "g", false, "Install global config file")
 	flag.StringVarP(&model, "model", "m", "", "Specify the name of the Model you'd like to create")
-	flag.BoolVarP(&rails, "rails", "r", false, "Run rails generators")
-	flag.BoolVarP(&vue, "vue", "v", true, "Set whether Vue files are created")
+	flag.BoolVarP(&rails, "rails", "r", config.Rails, "Run rails generators")
+	flag.BoolVarP(&vue, "vue", "v", config.Vue, "Set whether Vue files are created")
 }
 
 func confirmUserActions(s string, tries int) bool {
@@ -89,14 +101,6 @@ func confirmUserActions(s string, tries int) bool {
 	confirmed = false
 	return confirmed
 }
-
-// func colorizeBool(arg bool) {
-// 	if arg == true {
-// 		color.Blue(arg)
-// 	} else {
-// 		color.Red(arg)
-// 	}
-// }
 
 func check(e error) {
 	if e != nil {
