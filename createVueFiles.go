@@ -15,7 +15,7 @@ var componentsPath string
 var userPath string
 
 // Create AdminRecordFile - LabelAdmin (admin)
-// Create AdminListFile - LabelsAdmin (admin)
+// Create AdminCollectionFile - LabelsAdmin (admin)
 // Create AdminNewRecordFile - NewLabel (admin)
 // Create AdminEditFile - EditLabelAdmin (admin)
 
@@ -24,7 +24,7 @@ var userPath string
 // Create ComponentListFile - LabelsList (components)
 
 // Create UserRecordFile - UserLabel (user)
-// Create UserListFile - UserLabels (user)
+// Create UserCollectionFile - UserLabels (user)
 // Create UserEditFile - EditUserLabel (admin)
 
 func createVueFiles() {
@@ -44,7 +44,7 @@ func createVueFiles() {
 		}
 		fmt.Printf("Writing admin files..\n")
 		createAdminRecordFile()
-		createAdminListFile()
+		createAdminCollectionFile()
 		createAdminNewRecordFile()
 		createAdminEditFile()
 	}
@@ -58,14 +58,14 @@ func createVueFiles() {
 	createComponentRecordDetailFile()
 	createComponentListFile()
 
+	fmt.Printf("Writing user files..\n")
 	userPath = filepath.Join(vuePath, config.UserPagesPath, inflection.Plural(model))
 	if _, err := os.Stat(userPath); os.IsNotExist(err) {
 		fmt.Printf("Creating directory structure\n")
 		os.MkdirAll(userPath, 0754)
 	}
-	fmt.Printf("Writing user files..\n")
 	createUserRecordFile()
-	createUserListFile()
+	createUserCollectionFile()
 	createUserEditFile()
 }
 
@@ -76,7 +76,7 @@ func createAdminRecordFile() {
 	check(err)
 }
 
-func createAdminListFile() {
+func createAdminCollectionFile() {
 	writable := []byte(writeTemplate(inflection.Plural(model) + "Admin"))
 	err := ioutil.WriteFile(adminPath+"/"+inflection.Plural(model)+"Admin.vue", writable, 0754)
 	check(err)
@@ -115,13 +115,19 @@ func createComponentListFile() {
 
 // User
 func createUserRecordFile() {
-
+	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
+	err := ioutil.WriteFile(userPath+"/"+"User"+model+".vue", writable, 0754)
+	check(err)
 }
 
-func createUserListFile() {
-
+func createUserCollectionFile() {
+	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
+	err := ioutil.WriteFile(userPath+"/"+"User"+inflection.Plural(model)+".vue", writable, 0754)
+	check(err)
 }
 
 func createUserEditFile() {
-
+	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
+	err := ioutil.WriteFile(userPath+"/"+"EditUser"+model+".vue", writable, 0754)
+	check(err)
 }
