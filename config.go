@@ -7,12 +7,35 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"strings"
 )
+
+const jsonConfig = `
+{
+  "metadata": {
+		"name": "Rails Aide",
+		"stub": "rails-aide",
+    "basedir": "/.rails-aide",
+    "version": "0.0.1",
+    "author": "CromonMS <http://github.com/CromonMS>",
+    "description": "A companion for building Rails assets",
+    "url": "https://github.com/msc-network/rails-aide - TODO"
+  },
+  "BaseDir": "/app",
+  "FrontendPath": "/javascript/frontend",
+  "AdminPagesPath": "/pages/Admin/",
+  "UserPagesPath": "/pages/User/",
+  "ComponentsPath": "/components/",
+  "Admin": true,
+  "Vue": true,
+  "Rails": false
+}`
 
 // Config file is JSON
 type Config struct {
 	Metadata struct {
 		Name        string `json:"name"`
+		Stub        string `json:"stub"`
 		BaseDir     string `json:"basedir"`
 		Version     string `json:"version"`
 		Author      string `json:"author"`
@@ -34,23 +57,9 @@ const defaultCustomFilename string = "builder.config.json"
 
 // load Config file into app
 func loadConfig() Config {
-	// Check for global config and use if present.
-	globalConfigFile := filepath.Join("~/.rails-aide", defaultCustomFilename)
-
-	// fmt.Println("~/.rails-aide", defaultCustomFilename)
-
-	globalConfig, _ := os.Open(globalConfigFile)
-	// check(err)
-	defer globalConfig.Close()
-	if globalConfig != nil {
-		jsonParser := json.NewDecoder(globalConfig)
-		err := jsonParser.Decode(&config)
-		check(err)
-		return config
-	}
+	usr, _ := user.Current()
 	// Check for local config and use if present.
 	localConfig, _ := os.Open(defaultCustomFilename)
-	// check(err)
 	defer localConfig.Close()
 	if localConfig != nil {
 		jsonParser := json.NewDecoder(localConfig)
@@ -58,12 +67,19 @@ func loadConfig() Config {
 		check(err)
 		return config
 	}
-	// Otherwise use built in config.22
-	configFile, err := os.Open(defaultConfigFile)
-	check(err)
-	defer configFile.Close()
-	jsonParser := json.NewDecoder(configFile)
-	err = jsonParser.Decode(&config)
+	// Check for global config and use if present.
+	globalConfigFile := filepath.Join(usr.HomeDir, ".rails-aide", defaultCustomFilename)
+	globalConfig, _ := os.Open(globalConfigFile)
+	defer globalConfig.Close()
+	if globalConfig != nil {
+		jsonParser := json.NewDecoder(globalConfig)
+		err := jsonParser.Decode(&config)
+		check(err)
+		return config
+	}
+	// Otherwise use built in config.
+	jsonParser := json.NewDecoder(strings.NewReader(jsonConfig))
+	err := jsonParser.Decode(&config)
 	check(err)
 	return config
 }
@@ -92,11 +108,11 @@ func installGlobalConfigFile() {
 func checkOrCreateGlobalAppFolder() {
 	file, err := ioutil.ReadFile(defaultConfigFile)
 	check(err)
-	usr, err := user.Current()
+	usr, _ := user.Current()
 	appPath := filepath.Join(usr.HomeDir, "/.rails-aide")
-	fmt.Printf("App config installed in: %s\n\n", appPath)
 	if _, err := os.Stat(appPath); os.IsNotExist(err) {
-		fmt.Printf("Creating global app dir\n")
+		fmt.Printf("Creating global app dir\n\n")
+		fmt.Printf("Global config installed in: %s\n\n", appPath)
 		err = os.MkdirAll(appPath, 0754)
 		writable := []byte(file)
 		os.Chdir(appPath)

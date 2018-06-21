@@ -10,6 +10,8 @@ For information about flags and what they do see the [docs](docs/index.md)
 
 ### Quick Start
 
+On first run a global config file will be created in ~/.rails-aide
+
 Run: ```./mscmgmt-builder -help```
 
 ## Development
@@ -24,13 +26,14 @@ Run tool: ```./mscmgmt-builder -help```
 
 ## TODO
 
-* Realised that reading from config.json initally is not possible and only works because the file is int he dev folder!!
-* Write generated files to directory rather than where the binary is run.
+* ~~Write generated files to directory rather than where the binary is run~~
 * Piggy back running rails commands - involves storing model attributes and generate the rails command
 * ~~Better config using a local file to overwrite the default if present~~
 * ~~Allow use of a global config too~~
 * More involved templates including imports, mixins etc.
-* Make it more generic for other Rails apps. Possibly rename to 'railsgo'
+* Make it more generic for other Rails apps. Possibly rename to 'rails-aide' - IN PROGRESS
+* Make generated filenames more customisable via config
+* Create log and write to basedir
 
 ## Credits
 

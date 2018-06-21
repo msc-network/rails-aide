@@ -92,6 +92,11 @@ func confirmUserActions(s string, tries int) bool {
 			continue
 		}
 
+		if strings.ToLower(strings.TrimSpace(res))[0] == 'n' {
+			confirmed = false
+			return confirmed
+		}
+
 		if strings.ToLower(strings.TrimSpace(res))[0] == 'y' {
 			confirmed = true
 			return confirmed
