@@ -122,19 +122,19 @@ func createComponentListFile() {
 
 // User
 func createUserRecordFile() {
-	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
+	writable := []byte(writeTemplate("User" + model))
 	err := ioutil.WriteFile(userPath+"/"+"User"+model+".vue", writable, 0754)
 	check(err)
 }
 
 func createUserCollectionFile() {
-	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
+	writable := []byte(writeTemplate("User" + inflection.Plural(model)))
 	err := ioutil.WriteFile(userPath+"/"+"User"+inflection.Plural(model)+".vue", writable, 0754)
 	check(err)
 }
 
 func createUserEditFile() {
-	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
+	writable := []byte(writeTemplate("EditUser" + model))
 	err := ioutil.WriteFile(userPath+"/"+"EditUser"+model+".vue", writable, 0754)
 	check(err)
 }
