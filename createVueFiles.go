@@ -78,7 +78,7 @@ func createFile(templateName string, fileFullPath string) {
 
 // Admin
 func createAdminRecordFile() {
-	writable := []byte(writeTemplate(model + "Admin.vue"))
+	writable := []byte(writeTemplate(model + "Admin"))
 	err := ioutil.WriteFile(adminPath+"/"+model+"Admin.vue", writable, 0754)
 	check(err)
 }

@@ -52,8 +52,9 @@ type Config struct {
 	Rails          bool   `json:"Rails"`
 }
 
-const defaultConfigFile string = "config.json"
-const defaultCustomFilename string = "builder.config.json"
+const defaultCustomFilename string = "ra.config.json"
+
+var jsonConfigBlob = []byte(jsonConfig)
 
 // load Config file into app
 func loadConfig() Config {
@@ -86,35 +87,38 @@ func loadConfig() Config {
 
 // Write local config file
 func installLocalConfigFile() {
-	file, err := ioutil.ReadFile(defaultConfigFile)
+	err := json.Unmarshal(jsonConfigBlob, &config)
 	check(err)
-	fmt.Printf("Installing local config file (builder.config.json)\nSee docs for configuration details\n")
-	writable := []byte(file)
+	writableJSON, _ := json.Marshal(config)
+	fmt.Printf("Installing local config file (ra.config.json)\nSee docs for configuration details\n")
+	writable := []byte(writableJSON)
 	err2 := ioutil.WriteFile(defaultCustomFilename, writable, 0754)
 	check(err2)
 }
 
 // Write a global config file
 func installGlobalConfigFile() {
-	file, err := ioutil.ReadFile(defaultConfigFile)
+	err := json.Unmarshal(jsonConfigBlob, &config)
 	check(err)
-	fmt.Printf("Installing global config file (builder.config.json) in ~/.rails-go\nSee docs for configuration details\n")
-	writable := []byte(file)
+	writableJSON, _ := json.Marshal(config)
+	fmt.Printf("Installing global config file (ra.config.json) in ~/.rails-go\nSee docs for configuration details\n")
+	writable := []byte(writableJSON)
 	err2 := ioutil.WriteFile(defaultCustomFilename, writable, 0754)
 	check(err2)
 }
 
 // Check existence of app folder.
 func checkOrCreateGlobalAppFolder() {
-	file, err := ioutil.ReadFile(defaultConfigFile)
+	err := json.Unmarshal(jsonConfigBlob, &config)
 	check(err)
+	writableJSON, _ := json.Marshal(config)
 	usr, _ := user.Current()
 	appPath := filepath.Join(usr.HomeDir, "/.rails-aide")
 	if _, err := os.Stat(appPath); os.IsNotExist(err) {
 		fmt.Printf("Creating global app dir\n\n")
 		fmt.Printf("Global config installed in: %s\n\n", appPath)
 		err = os.MkdirAll(appPath, 0754)
-		writable := []byte(file)
+		writable := []byte(writableJSON)
 		os.Chdir(appPath)
 		err = ioutil.WriteFile(defaultCustomFilename, writable, 0754)
 		check(err)

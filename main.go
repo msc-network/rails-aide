@@ -22,6 +22,10 @@ var (
 )
 
 func main() {
+	fmt.Println(config.Metadata.Name + " | version: " + config.Metadata.Version)
+	fmt.Println(config.Metadata.Description + "\n")
+	fmt.Println(config.Metadata.URL + "\n")
+
 	flag.Parse()
 
 	// if user does not supply flags, print help
