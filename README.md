@@ -1,10 +1,14 @@
-# rails-aide [![Build Status](https://travis-ci.org/msc-network/mscmgmt-builder.svg?branch=master)](https://travis-ci.org/msc-network/mscmgmt-builder)
+# rails-aide [![Build Status](https://travis-ci.org/msc-network/rails-aide.svg?branch=master)](https://travis-ci.org/msc-network/rails-aide)
 
 A small command line utility for automating file creation and other helpers in a Rails app with Vue on the front end.
 
 Currently specific to the mscmgmt webapp.
 
 For a more detailed look go read the [docs](docs/index.md)
+
+## Install
+
+
 
 ## Usage
 
@@ -14,17 +18,17 @@ For information about flags and what they do see [usage.md](docs/usage.md)
 
 On first run a global config file will be created in ~/.rails-aide
 
-Run: ```./mscmgmt-builder -help```
+Run: ```./rails-aide -help```
 
 ## Development
 
 The latest binary for Linux is included in the repo, to make your own:
 
-Clone repo: ```git clone github.com/msc-network/mscmgmt-builder.git```
+Clone repo: ```git clone github.com/msc-network/rails-aide.git```
 
 Build binary: ```go build```
 
-Run tool: ```./mscmgmt-builder -help```
+Run tool: ```./rails-aide -help```
 
 ## TODO
 
@@ -33,7 +37,7 @@ Run tool: ```./mscmgmt-builder -help```
 * ~~Better config using a local file to overwrite the default if present~~
 * ~~Allow use of a global config too~~
 * More involved templates including imports, mixins etc.
-* Make it more generic for other Rails apps. Possibly rename to 'rails-aide' - IN PROGRESS
+* ~~Rename to 'rails-aide'~~
 * Make generated filenames more customisable via config
 * Create log and write to basedir
 
