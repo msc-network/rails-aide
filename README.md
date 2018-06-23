@@ -8,7 +8,11 @@ For a more detailed look go read the [docs](docs/index.md)
 
 ## Install
 
+First download the binary from [here](https://github.com/msc-network-rails-aide)
 
+Then copy to your usr/local ```sudo cp rails-aide /usr/local/bin```
+
+```rails-aide``` is now available globally
 
 ## Usage
 
