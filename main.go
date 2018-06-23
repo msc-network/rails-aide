@@ -55,7 +55,7 @@ func main() {
 	fmt.Printf("Vue files?: %t\n", vue)
 	fmt.Printf("Run rails commands?: %t\n", rails)
 
-	// Ask to continue
+	// Ask to continue, amount of tries
 	confirmUserActions("Continue?\n", 3)
 
 	if confirmed == true {

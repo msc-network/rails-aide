@@ -45,6 +45,9 @@ app
         └── pages
             ├── Admin
             │   └── MODELs
+            │       └── MODEL
+            │       └── MODEL
+            │       └── MODEL
             └── User
                 └── MODELs
 ```

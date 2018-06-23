@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// re: filenames, _ = singular model, - = plural model
+// re: filenames, ! = singular model, ? = plural model
 const jsonConfig = `
 {
   "metadata": {
@@ -20,24 +20,25 @@ const jsonConfig = `
     "version": "0.0.1",
     "author": "CromonMS <http://github.com/CromonMS>",
     "description": "A companion for building Rails assets",
-    "url": "https://github.com/msc-network/rails-aide - TODO: change name"
+    "url": "https://github.com/msc-network/rails-aide",
+    "repository": "https://github.com/msc-network/rails-aide"
 	},
 	"filenames": {
 		"admin": {
-			"AdminRecordFile": "_Admin",
-			"AdminCollectionFile": "-Admin",
-			"AdminNewRecordFile": "New_",
-			"AdminEditFile": "Edit_Admin"
+			"AdminRecordFile": "!Admin",
+			"AdminCollectionFile": "=Admin",
+			"AdminNewRecordFile": "New!",
+			"AdminEditFile": "Edit!Admin"
 		},
 		"components": {
-			"ComponentFormFile": "_Form",
-			"ComponentRecordDetailFile": "_Detail",
-			"ComponentListFile": "-List"
+			"ComponentFormFile": "!Form",
+			"ComponentRecordDetailFile": "!Detail",
+			"ComponentListFile": "=List"
 		},
 		"user": {
-			"UserRecordFile": "User_",
-			"UserCollectionFile": "User-",
-			"UserEditFile": "EditUser_"
+			"UserRecordFile": "User!",
+			"UserCollectionFile": "User=",
+			"UserEditFile": "EditUser!"
 		}
 	},
   "BaseDir": "/app",
@@ -60,6 +61,7 @@ type Config struct {
 		Author      string `json:"author"`
 		Description string `json:"description"`
 		URL         string `json:"url"`
+		Repository  string `json:"repository"`
 	} `json:"metadata"`
 	Filenames struct {
 		Admin struct {

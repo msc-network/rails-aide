@@ -6,157 +6,113 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"regexp"
 
-	inflection "github.com/jinzhu/inflection"
+	"github.com/jinzhu/inflection"
 )
 
-var vuePath string
+var frontendPath string
 var adminPath string
 var componentsPath string
 var userPath string
-
-// Create AdminRecordFile - LabelAdmin (admin)
-// Create AdminCollectionFile - LabelsAdmin (admin)
-// Create AdminNewRecordFile - NewLabel (admin)
-// Create AdminEditFile - EditLabelAdmin (admin)
-
-// Create ComponentFormFile - LabelForm (components)
-// Create ComponentRecordDetailFile - LabelDetail (components)
-// Create ComponentListFile - LabelsList (components)
-
-// Create UserRecordFile - UserLabel (user)
-// Create UserCollectionFile - UserLabels (user)
-// Create UserEditFile - EditUserLabel (admin)
+var templateName string
 
 func createVueFiles() {
-	// Checks for existence of directory and if not, creates.
-	vuePath = filepath.Join("./", config.BaseDir, config.FrontendPath)
-	if _, err := os.Stat(vuePath); os.IsNotExist(err) {
-		fmt.Printf("Creating directory structure\n")
-		os.MkdirAll(vuePath, 0754)
+	// Checks for existence of frontend directory and if not, creates.
+	frontendPath = filepath.Join("./", config.BaseDir, config.FrontendPath)
+	if _, err := os.Stat(frontendPath); os.IsNotExist(err) {
+		fmt.Printf("Creating frontend directory structure\n")
+		os.MkdirAll(frontendPath, 0754)
 	}
 
 	fmt.Printf("Creating Vue Files..\n")
 	if admin == true {
-		adminPath = filepath.Join(vuePath, config.AdminPagesPath, inflection.Plural(model))
+		adminPath = filepath.Join(frontendPath, config.AdminPagesPath, inflection.Plural(model))
 		if _, err := os.Stat(adminPath); os.IsNotExist(err) {
 			fmt.Printf("Creating directory structure\n")
 			os.MkdirAll(adminPath, 0754)
 		}
 		fmt.Printf("Writing admin files..\n")
-		createAdminRecordFile()
-		createAdminCollectionFile()
-		createAdminNewRecordFile()
-		createAdminEditFile()
+		createAdminSet()
 	}
-	fmt.Printf("Writing component files..\n")
-	componentsPath = filepath.Join(vuePath, config.ComponentsPath, inflection.Plural(model))
+
+	componentsPath = filepath.Join(frontendPath, config.ComponentsPath, inflection.Plural(model))
 	if _, err := os.Stat(componentsPath); os.IsNotExist(err) {
 		fmt.Printf("Creating directory structure\n")
 		os.MkdirAll(componentsPath, 0754)
 	}
-	createComponentFormFile()
-	createComponentRecordDetailFile()
-	createComponentListFile()
+	fmt.Printf("Writing component files..\n")
+	createComponentSet()
 
-	fmt.Printf("Writing user files..\n")
-	userPath = filepath.Join(vuePath, config.UserPagesPath, inflection.Plural(model))
+	userPath = filepath.Join(frontendPath, config.UserPagesPath, inflection.Plural(model))
 	if _, err := os.Stat(userPath); os.IsNotExist(err) {
 		fmt.Printf("Creating directory structure\n")
 		os.MkdirAll(userPath, 0754)
 	}
-	createUserRecordFile()
-	createUserCollectionFile()
-	createUserEditFile()
+	fmt.Printf("Writing user files..\n")
+	createUserSet()
 }
 
-func createAdminFiles() {
+func createAdminSet() {
+	singularMatch := regexp.MustCompile("(!)")
+	pluralMatch := regexp.MustCompile("(=)")
 	adminSet := config.Filenames.Admin
-	fmt.Println(adminSet)
 	v := reflect.ValueOf(adminSet)
 	values := make([]interface{}, v.NumField())
 	for i := 0; i < v.NumField(); i++ {
 		values[i] = v.Field(i).Interface()
-		fmt.Println(values[i])
+		filenamestring := fmt.Sprint(values[i])
+		if singularMatch.MatchString(filenamestring) {
+			templateName = singularMatch.ReplaceAllLiteralString(filenamestring, model)
+		} else if pluralMatch.MatchString(filenamestring) {
+			templateName = pluralMatch.ReplaceAllLiteralString(filenamestring, inflection.Plural(model))
+		}
+		fileFullPath := adminPath + "/" + templateName + ".vue"
+		createFile(templateName, fileFullPath)
 	}
 }
 
 func createComponentSet() {
+	singularMatch := regexp.MustCompile("(!)")
+	pluralMatch := regexp.MustCompile("(=)")
 	componentSet := config.Filenames.Components
-	fmt.Println(componentSet)
+	v := reflect.ValueOf(componentSet)
+	values := make([]interface{}, v.NumField())
+	for i := 0; i < v.NumField(); i++ {
+		values[i] = v.Field(i).Interface()
+		filenamestring := fmt.Sprint(values[i])
+		if singularMatch.MatchString(filenamestring) {
+			templateName = singularMatch.ReplaceAllLiteralString(filenamestring, model)
+		} else if pluralMatch.MatchString(filenamestring) {
+			templateName = pluralMatch.ReplaceAllLiteralString(filenamestring, inflection.Plural(model))
+		}
+		fileFullPath := componentsPath + "/" + templateName + ".vue"
+		createFile(templateName, fileFullPath)
+	}
 }
 
 func createUserSet() {
+	singularMatch := regexp.MustCompile("(!)")
+	pluralMatch := regexp.MustCompile("(=)")
 	userSet := config.Filenames.User
-	fmt.Println(userSet)
+	v := reflect.ValueOf(userSet)
+	values := make([]interface{}, v.NumField())
+	for i := 0; i < v.NumField(); i++ {
+		values[i] = v.Field(i).Interface()
+		filenamestring := fmt.Sprint(values[i])
+		if singularMatch.MatchString(filenamestring) {
+			templateName = singularMatch.ReplaceAllLiteralString(filenamestring, model)
+		} else if pluralMatch.MatchString(filenamestring) {
+			templateName = pluralMatch.ReplaceAllLiteralString(filenamestring, inflection.Plural(model))
+		}
+		fileFullPath := userPath + "/" + templateName + ".vue"
+		createFile(templateName, fileFullPath)
+	}
 }
 
 // TODO: [unused] Test generic createFile and make it handle arrays
 func createFile(templateName string, fileFullPath string) {
 	writable := []byte(writeTemplate(templateName))
 	err := ioutil.WriteFile(fileFullPath, writable, 0754)
-	check(err)
-}
-
-// Admin
-func createAdminRecordFile() {
-	writable := []byte(writeTemplate(model + "Admin"))
-	err := ioutil.WriteFile(adminPath+"/"+model+"Admin.vue", writable, 0754)
-	check(err)
-}
-
-func createAdminCollectionFile() {
-	writable := []byte(writeTemplate(inflection.Plural(model) + "Admin"))
-	err := ioutil.WriteFile(adminPath+"/"+inflection.Plural(model)+"Admin.vue", writable, 0754)
-	check(err)
-}
-
-func createAdminNewRecordFile() {
-	writable := []byte(writeTemplate("New" + model))
-	err := ioutil.WriteFile(adminPath+"/"+"New"+model+".vue", writable, 0754)
-	check(err)
-}
-
-func createAdminEditFile() {
-	writable := []byte(writeTemplate("Edit" + model + "Admin"))
-	err := ioutil.WriteFile(adminPath+"/"+"Edit"+model+"Admin.vue", writable, 0754)
-	check(err)
-}
-
-// Components
-func createComponentFormFile() {
-	writable := []byte(writeTemplate(model + "Form"))
-	err := ioutil.WriteFile(componentsPath+"/"+model+"Form.vue", writable, 0754)
-	check(err)
-}
-
-func createComponentRecordDetailFile() {
-	writable := []byte(writeTemplate(model + "Detail"))
-	err := ioutil.WriteFile(componentsPath+"/"+model+"Detail.vue", writable, 0754)
-	check(err)
-}
-
-func createComponentListFile() {
-	writable := []byte(writeTemplate(inflection.Plural(model) + "List"))
-	err := ioutil.WriteFile(componentsPath+"/"+inflection.Plural(model)+"List.vue", writable, 0754)
-	check(err)
-}
-
-// User
-func createUserRecordFile() {
-	writable := []byte(writeTemplate("User" + model))
-	err := ioutil.WriteFile(userPath+"/"+"User"+model+".vue", writable, 0754)
-	check(err)
-}
-
-func createUserCollectionFile() {
-	writable := []byte(writeTemplate("User" + inflection.Plural(model)))
-	err := ioutil.WriteFile(userPath+"/"+"User"+inflection.Plural(model)+".vue", writable, 0754)
-	check(err)
-}
-
-func createUserEditFile() {
-	writable := []byte(writeTemplate("EditUser" + model))
-	err := ioutil.WriteFile(userPath+"/"+"EditUser"+model+".vue", writable, 0754)
 	check(err)
 }
