@@ -42,7 +42,7 @@ Run tool: ```./rails-aide -help```
 * ~~Allow use of a global config too~~
 * More involved templates including imports, mixins etc.
 * ~~Rename to 'rails-aide'~~
-* Make generated filenames more customisable via config
+* ~~Make generated filenames customisable via config~~
 * Create log and write to basedir
 
 ## Credits

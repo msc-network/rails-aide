@@ -4,17 +4,19 @@ How to use a local config file.
 
 ## Global configuration
 
-Upon first run use a global config file will be copied into your home directory in the ```.rails-aide``` folder. You can customise this file just like a local version.
+Upon first run use a global config file will be copied into your home directory in the ```.rails-aide``` folder. You can customise this file just like a local version. 
+
+If you have changed some settings and would like to revert back to the original config, then just run ```rails-aide -g```
 
 ## Install local config
 
 Run:
 
 ```shell
-./mscmgmt-builder -c
+rails-aide -c
 ```
 
-This will copy a ```builder.config.json``` file to your local filesystem in the directory where you are using the tool.
+This will copy a ```ra.config.json``` file to your local filesystem in the directory where you are using the tool.
 
 The utility will automatically pick up the file and use the settings in this file over the defaults.
 
