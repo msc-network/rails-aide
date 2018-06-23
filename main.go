@@ -22,6 +22,8 @@ var (
 )
 
 func main() {
+	// createAdminFiles()
+
 	fmt.Println(config.Metadata.Name + " | version: " + config.Metadata.Version)
 	fmt.Println(config.Metadata.Description + "\n")
 	fmt.Println(config.Metadata.URL + "\n")

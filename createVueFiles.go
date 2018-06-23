@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"reflect"
 
 	inflection "github.com/jinzhu/inflection"
 )
@@ -67,6 +68,27 @@ func createVueFiles() {
 	createUserRecordFile()
 	createUserCollectionFile()
 	createUserEditFile()
+}
+
+func createAdminFiles() {
+	adminSet := config.Filenames.Admin
+	fmt.Println(adminSet)
+	v := reflect.ValueOf(adminSet)
+	values := make([]interface{}, v.NumField())
+	for i := 0; i < v.NumField(); i++ {
+		values[i] = v.Field(i).Interface()
+		fmt.Println(values[i])
+	}
+}
+
+func createComponentSet() {
+	componentSet := config.Filenames.Components
+	fmt.Println(componentSet)
+}
+
+func createUserSet() {
+	userSet := config.Filenames.User
+	fmt.Println(userSet)
 }
 
 // TODO: [unused] Test generic createFile and make it handle arrays

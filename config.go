@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// re: filenames, _ = singular model, - = plural model
 const jsonConfig = `
 {
   "metadata": {
@@ -20,7 +21,25 @@ const jsonConfig = `
     "author": "CromonMS <http://github.com/CromonMS>",
     "description": "A companion for building Rails assets",
     "url": "https://github.com/msc-network/rails-aide - TODO: change name"
-  },
+	},
+	"filenames": {
+		"admin": {
+			"AdminRecordFile": "_Admin",
+			"AdminCollectionFile": "-Admin",
+			"AdminNewRecordFile": "New_",
+			"AdminEditFile": "Edit_Admin"
+		},
+		"components": {
+			"ComponentFormFile": "_Form",
+			"ComponentRecordDetailFile": "_Detail",
+			"ComponentListFile": "-List"
+		},
+		"user": {
+			"UserRecordFile": "User_",
+			"UserCollectionFile": "User-",
+			"UserEditFile": "EditUser_"
+		}
+	},
   "BaseDir": "/app",
   "FrontendPath": "/javascript/frontend",
   "AdminPagesPath": "/pages/Admin/",
@@ -42,6 +61,24 @@ type Config struct {
 		Description string `json:"description"`
 		URL         string `json:"url"`
 	} `json:"metadata"`
+	Filenames struct {
+		Admin struct {
+			AdminRecordFile     string `json:"AdminRecordFile"`
+			AdminCollectionFile string `json:"AdminCollectionFile"`
+			AdminNewRecordFile  string `json:"AdminNewRecordFile"`
+			AdminEditFile       string `json:"AdminEditFile"`
+		} `json:"admin"`
+		Components struct {
+			ComponentFormFile         string `json:"ComponentFormFile"`
+			ComponentRecordDetailFile string `json:"ComponentRecordDetailFile"`
+			ComponentListFile         string `json:"ComponentListFile"`
+		} `json:"components"`
+		User struct {
+			UserRecordFile     string `json:"UserRecordFile"`
+			UserCollectionFile string `json:"UserCollectionFile"`
+			UserEditFile       string `json:"UserEditFile"`
+		}
+	} `json:"filenames"`
 	BaseDir        string `json:"BaseDir"`
 	FrontendPath   string `json:"FrontendPath"`
 	AdminPagesPath string `json:"AdminPagesPath"`
@@ -103,6 +140,9 @@ func installGlobalConfigFile() {
 	writableJSON, _ := json.Marshal(config)
 	fmt.Printf("Installing global config file (ra.config.json) in ~/.rails-go\nSee docs for configuration details\n")
 	writable := []byte(writableJSON)
+	usr, _ := user.Current()
+	appPath := filepath.Join(usr.HomeDir, "/.rails-aide")
+	os.Chdir(appPath)
 	err2 := ioutil.WriteFile(defaultCustomFilename, writable, 0754)
 	check(err2)
 }
@@ -111,16 +151,12 @@ func installGlobalConfigFile() {
 func checkOrCreateGlobalAppFolder() {
 	err := json.Unmarshal(jsonConfigBlob, &config)
 	check(err)
-	writableJSON, _ := json.Marshal(config)
 	usr, _ := user.Current()
 	appPath := filepath.Join(usr.HomeDir, "/.rails-aide")
 	if _, err := os.Stat(appPath); os.IsNotExist(err) {
 		fmt.Printf("Creating global app dir\n\n")
 		fmt.Printf("Global config installed in: %s\n\n", appPath)
 		err = os.MkdirAll(appPath, 0754)
-		writable := []byte(writableJSON)
-		os.Chdir(appPath)
-		err = ioutil.WriteFile(defaultCustomFilename, writable, 0754)
-		check(err)
+		installGlobalConfigFile()
 	}
 }
