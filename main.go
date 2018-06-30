@@ -61,6 +61,7 @@ func main() {
 	if confirmed == true {
 		// If --rails is true then run Rails command too
 		if rails == true {
+			// buildModel()
 			fmt.Printf("Running Rails commands..\n")
 		}
 

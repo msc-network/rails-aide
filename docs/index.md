@@ -20,6 +20,6 @@ See them in greater detail [defaults.md](defaults.md)
 
 ### Usage
 
-By running ```mscmgmt-builder -help``` you can see a simple explanation of each available flag
+By running ```rails-aide -help``` you can see a simple explanation of each available flag
 
 For more information see [usage.md](usage.md)
