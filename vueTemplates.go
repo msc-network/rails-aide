@@ -6,7 +6,8 @@ import (
 )
 
 const tpl = `<template>
-	<div class="content">
+	<div class="container">
+		{{.Name}}
 	</div>
 </template>
 
