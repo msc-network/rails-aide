@@ -13,6 +13,7 @@ var (
 	admin               bool
 	model               string
 	rails               bool
+	users               bool
 	vue                 bool
 	userConfirmation    string
 	confirmed           bool
@@ -84,6 +85,7 @@ func init() {
 	flag.StringVarP(&model, "model", "m", "", "Specify the name of the Model you'd like to create")
 	flag.BoolVarP(&rails, "rails", "r", config.Rails, "Run rails generators")
 	flag.BoolVarP(&vue, "vue", "v", config.Vue, "Set whether Vue files are created")
+	flag.BoolVarP(&users, "users", "u", config.Vue, "Set whether User files are created")
 }
 
 func confirmUserActions(s string, tries int) bool {
