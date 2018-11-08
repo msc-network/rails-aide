@@ -46,7 +46,8 @@ const jsonConfig = `
   "AdminPagesPath": "/pages/Admin/",
   "UserPagesPath": "/pages/User/",
   "ComponentsPath": "/components/",
-  "Admin": true,
+	"Admin": true,
+	"User": true
   "Vue": true,
   "Rails": false
 }`
