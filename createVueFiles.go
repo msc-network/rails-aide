@@ -29,7 +29,7 @@ func createVueFiles() {
 	if admin == true {
 		adminPath = filepath.Join(frontendPath, config.AdminPagesPath, inflection.Plural(model))
 		if _, err := os.Stat(adminPath); os.IsNotExist(err) {
-			fmt.Printf("Creating directory structure\n")
+			fmt.Printf("Creating admin directory structure\n")
 			os.MkdirAll(adminPath, 0754)
 		}
 		fmt.Printf("Writing admin files..\n")
@@ -44,13 +44,15 @@ func createVueFiles() {
 	fmt.Printf("Writing component files..\n")
 	createComponentSet()
 
-	userPath = filepath.Join(frontendPath, config.UserPagesPath, inflection.Plural(model))
-	if _, err := os.Stat(userPath); os.IsNotExist(err) {
-		fmt.Printf("Creating directory structure\n")
-		os.MkdirAll(userPath, 0754)
+	if users == true {
+		userPath = filepath.Join(frontendPath, config.UserPagesPath, inflection.Plural(model))
+		if _, err := os.Stat(userPath); os.IsNotExist(err) {
+			fmt.Printf("Creating directory structure\n")
+			os.MkdirAll(userPath, 0754)
+		}
+		fmt.Printf("Writing user files..\n")
+		createUserSet()
 	}
-	fmt.Printf("Writing user files..\n")
-	createUserSet()
 }
 
 func createAdminSet() {
