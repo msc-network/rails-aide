@@ -86,6 +86,7 @@ Contains information about the metadata of the application - this doesn't need c
 | description           | string | A short description of this software                       |
 | url                   | string | The hoempage URL for this software                         |
 | repository            | string | The respository URL for this software                      |
+| example               | string | An Example command                                         |
 
 ### Filename settings
 

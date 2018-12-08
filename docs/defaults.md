@@ -12,7 +12,9 @@ The shipped defaults assume a rigid folder structure to your rails app, and are 
 "version": "0.0.1",
 "author": "CromonMS <http://github.com/CromonMS>",
 "description": "A companion for building Rails assets",
-"url": "https://github.com/msc-network/rails-aide - TODO: change name"
+"url": "https://github.com/msc-network/rails-aide - TODO: change name",
+"repository": "https://github.com/msc-network/rails-aide",
+"example": "Example: ./rails-aide -m Test -a=false -v=false -u=false -r=true"
 },
 ```
 
