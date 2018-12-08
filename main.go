@@ -28,6 +28,7 @@ func main() {
 	fmt.Println(config.Metadata.Name + " | version: " + config.Metadata.Version)
 	fmt.Println(config.Metadata.Description + "\n")
 	fmt.Println(config.Metadata.URL + "\n")
+	fmt.Println(config.Metadata.Example + "\n")
 
 	flag.Parse()
 
@@ -51,6 +52,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	if vue == false {
+		if admin == true || users == true {
+			fmt.Println("Cannot run admin or user tasks without enabling vue tasks.")
+			os.Exit(1)
+		}
+		fmt.Println("No vue tasks enabled, all other flags will be ignored at this time.")
+		os.Exit(1)
+	}
+
 	fmt.Printf("Creating model scaffold for: %s\n", model)
 	fmt.Printf("Admin files?: %t\n", admin)
 	fmt.Printf("Vue files?: %t\n", vue)
@@ -60,9 +70,13 @@ func main() {
 	confirmUserActions("Continue?\n", 3)
 
 	if confirmed == true {
+		// If --rails is true run model builder
+		if rails == true {
+			buildModel()
+		}
+
 		// If --rails is true then run Rails command too
 		if rails == true {
-			// buildModel()
 			fmt.Printf("Running Rails commands..\n")
 		}
 

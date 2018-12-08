@@ -40,7 +40,8 @@ The order in which this software reads config files is as follows, the internal 
     "author": "CromonMS <http://github.com/CromonMS>",
     "description": "A companion for building Rails assets",
     "url": "https://github.com/msc-network/rails-aide",
-    "repository": "https://github.com/msc-network/rails-aide"
+    "repository": "https://github.com/msc-network/rails-aide",
+    "example": "Example: ./rails-aide -m Test -a=false -v=false -u=false -r=true"
   },
   "filenames": {
     "admin": {

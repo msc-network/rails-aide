@@ -21,7 +21,8 @@ const jsonConfig = `
     "author": "CromonMS <http://github.com/CromonMS>",
     "description": "A companion for building Rails assets",
     "url": "https://github.com/msc-network/rails-aide",
-    "repository": "https://github.com/msc-network/rails-aide"
+		"repository": "https://github.com/msc-network/rails-aide",
+		"example": "Example: ./rails-aide -m Test -a=false -v=false -u=false -r=true"
 	},
 	"filenames": {
 		"admin": {
@@ -46,8 +47,7 @@ const jsonConfig = `
   "AdminPagesPath": "/pages/Admin/",
   "UserPagesPath": "/pages/User/",
   "ComponentsPath": "/components/",
-	"Admin": true,
-	"User": true
+  "Admin": true,
   "Vue": true,
   "Rails": false
 }`
@@ -63,6 +63,7 @@ type Config struct {
 		Description string `json:"description"`
 		URL         string `json:"url"`
 		Repository  string `json:"repository"`
+		Example     string `json:"example"`
 	} `json:"metadata"`
 	Filenames struct {
 		Admin struct {
@@ -88,6 +89,7 @@ type Config struct {
 	UserPagesPath  string `json:"UserPagesPath"`
 	ComponentsPath string `json:"ComponentsPath"`
 	Admin          bool   `json:"Admin"`
+	User           bool   `json:"User"`
 	Vue            bool   `json:"Vue"`
 	Rails          bool   `json:"Rails"`
 }
