@@ -153,7 +153,7 @@ func installGlobalConfigFile() {
 	err := json.Unmarshal(jsonConfigBlob, &config)
 	check(err)
 	writableJSON, _ := json.Marshal(config)
-	fmt.Printf("Installing global config file (ra.config.json) in ~/.rails-go\nSee docs for configuration details\n")
+	fmt.Printf("Installing global config file (ra.config.json) in ~/.rails-aide\nSee docs for configuration details\n")
 	writable := []byte(writableJSON)
 	usr, _ := user.Current()
 	appPath := filepath.Join(usr.HomeDir, "/.rails-aide")
