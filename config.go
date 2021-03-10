@@ -16,8 +16,8 @@ const jsonConfig = `
   "metadata": {
 		"name": "Rails Aide",
 		"stub": "rails-aide",
-    "basedir": "/.rails-aide",
-    "version": "0.0.1",
+    "basedir": "rails-aide",
+    "version": "0.0.2",
     "author": "CromonMS <http://github.com/CromonMS>",
     "description": "A companion for building Rails assets",
     "url": "https://github.com/msc-network/rails-aide",
@@ -46,9 +46,11 @@ const jsonConfig = `
   "FrontendPath": "/javascript/frontend",
   "AdminPagesPath": "/pages/Admin/",
   "UserPagesPath": "/pages/User/",
-  "ComponentsPath": "/components/",
+	"ComponentsPath": "/components/",
+	"StorePath": "/store/",
   "Admin": true,
   "Vue": true,
+  "Store": true,
   "Rails": false
 }`
 
@@ -88,9 +90,11 @@ type Config struct {
 	AdminPagesPath string `json:"AdminPagesPath"`
 	UserPagesPath  string `json:"UserPagesPath"`
 	ComponentsPath string `json:"ComponentsPath"`
+	StorePath      string `json:"StorePath"`
 	Admin          bool   `json:"Admin"`
 	User           bool   `json:"User"`
 	Vue            bool   `json:"Vue"`
+	Store          bool   `json:"Store"`
 	Rails          bool   `json:"Rails"`
 }
 
@@ -127,6 +131,12 @@ func loadConfig() Config {
 	return config
 }
 
+// Cleanup old global config file and place in new location
+func cleanupConfigFile() {
+	checkOldGlobalConfigFolder()
+
+}
+
 // Write local config file
 func installLocalConfigFile() {
 	err := json.Unmarshal(jsonConfigBlob, &config)
@@ -152,12 +162,35 @@ func installGlobalConfigFile() {
 	check(err2)
 }
 
+func checkOldGlobalConfigFolder() {
+	usr, _ := user.Current()
+	oldConfigPath := filepath.Join(usr.HomeDir, "/.rails-aide")
+	// exists, err := os.Stat(oldConfigPath)
+	_, err := os.Stat(oldConfigPath)
+	if err != nil {
+		println("os.Stat(): error for folder name ", oldConfigPath)
+		println("and error is : ", err.Error())
+		if os.IsNotExist(err) {
+			println("Directory Does not exists.")
+		}
+	}
+}
+
+// Cleanup old global config file and place in new location
+func cleanupOldGlobalFolder() {
+	err := json.Unmarshal(jsonConfigBlob, &config)
+	check(err)
+	// usr, _ := user.Current()
+	// oldConfigPath := filepath.Join(usr.HomeDir, "/.rails-aide")
+
+}
+
 // Check existence of app folder.
-func checkOrCreateGlobalAppFolder() {
+func checkOrCreateGlobalConfigFolder() {
 	err := json.Unmarshal(jsonConfigBlob, &config)
 	check(err)
 	usr, _ := user.Current()
-	appPath := filepath.Join(usr.HomeDir, "/.rails-aide")
+	appPath := filepath.Join(usr.HomeDir, "./config/rails-aide")
 	if _, err := os.Stat(appPath); os.IsNotExist(err) {
 		fmt.Printf("Creating global app dir\n\n")
 		fmt.Printf("Global config installed in: %s\n\n", appPath)

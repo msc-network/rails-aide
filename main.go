@@ -11,15 +11,17 @@ import (
 
 var (
 	admin               bool
+	cleanupConfig       bool
+	config              Config
+	confirmed           bool
+	installGlobalConfig bool
+	installLocalConfig  bool
 	model               string
 	rails               bool
+	store               bool
+	userConfirmation    string
 	users               bool
 	vue                 bool
-	userConfirmation    string
-	confirmed           bool
-	installLocalConfig  bool
-	installGlobalConfig bool
-	config              Config
 )
 
 func main() {
@@ -90,15 +92,17 @@ func main() {
 }
 
 func init() {
-	checkOrCreateGlobalAppFolder()
+	checkOrCreateGlobalConfigFolder()
 	config := loadConfig()
 
 	flag.BoolVarP(&admin, "admin", "a", config.Admin, "Set whether Admin files are created")
 	flag.BoolVarP(&installLocalConfig, "config", "c", false, "Install local config file")
+	flag.BoolVarP(&installLocalConfig, "cleanup-config", "d", false, "Clean up config (if you are using an old version)")
 	flag.BoolVarP(&installGlobalConfig, "gconfig", "g", false, "Install global config file")
 	flag.StringVarP(&model, "model", "m", "", "Specify the name of the Model you'd like to create")
 	flag.BoolVarP(&rails, "rails", "r", config.Rails, "Run rails generators")
 	flag.BoolVarP(&vue, "vue", "v", config.Vue, "Set whether Vue files are created")
+	flag.BoolVarP(&store, "store", "s", config.Store, "Set whether Vue store files are created")
 	flag.BoolVarP(&users, "users", "u", config.Vue, "Set whether User files are created")
 }
 
