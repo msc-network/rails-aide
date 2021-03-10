@@ -18,7 +18,7 @@ const jsonConfig = `
 		"stub": "rails-aide",
     "basedir": "rails-aide",
     "version": "0.0.2",
-    "author": "CromonMS <http://github.com/CromonMS>",
+    "author": "Cromon <http://github.com/Cromon>",
     "description": "A companion for building Rails assets",
     "url": "https://github.com/msc-network/rails-aide",
 		"repository": "https://github.com/msc-network/rails-aide",
@@ -92,7 +92,7 @@ type Config struct {
 	ComponentsPath string `json:"ComponentsPath"`
 	StorePath      string `json:"StorePath"`
 	Admin          bool   `json:"Admin"`
-	User           bool   `json:"User"`
+	Users          bool   `json:"Users"`
 	Vue            bool   `json:"Vue"`
 	Store          bool   `json:"Store"`
 	Rails          bool   `json:"Rails"`

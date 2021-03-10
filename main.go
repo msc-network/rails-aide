@@ -103,7 +103,7 @@ func init() {
 	flag.BoolVarP(&rails, "rails", "r", config.Rails, "Run rails generators")
 	flag.BoolVarP(&vue, "vue", "v", config.Vue, "Set whether Vue files are created")
 	flag.BoolVarP(&store, "store", "s", config.Store, "Set whether Vue store files are created")
-	flag.BoolVarP(&users, "users", "u", config.Vue, "Set whether User files are created")
+	flag.BoolVarP(&users, "users", "u", config.Users, "Set whether User files are created")
 }
 
 func confirmUserActions(s string, tries int) bool {
